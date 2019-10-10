@@ -7,5 +7,8 @@
     "16": "icons/adblock16.png",
     "48": "icons/adblock48.png",
     "128": "icons/adblock128.png"
+  },
+  "browser_action": {
+    "default_popup": "popup.html"
   }
 }
