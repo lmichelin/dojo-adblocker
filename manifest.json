@@ -8,6 +8,7 @@
     "48": "icons/adblock48.png",
     "128": "icons/adblock128.png"
   },
+  "permissions": ["webRequest", "<all_urls>"],
   "browser_action": {
     "default_popup": "popup.html"
   },
