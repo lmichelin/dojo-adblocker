@@ -4,6 +4,8 @@ const hostsListUrl =
 const patternsListUrl =
   "https://raw.githubusercontent.com/easylist/easylist/master/easylist/easylist_general_block.txt"
 
+let blockedRequestsCount = 0
+
 const fetchListsAndEnableAdBlocking = async () => {
   const hostsResponse = await fetch(hostsListUrl)
   const hostsResponseText = await hostsResponse.text()
@@ -25,6 +27,10 @@ const fetchListsAndEnableAdBlocking = async () => {
   chrome.webRequest.onBeforeRequest.addListener(
     requestDetails => {
       console.log(requestDetails.url)
+
+      blockedRequestsCount++
+      chrome.browserAction.setBadgeText({ text: blockedRequestsCount.toString() })
+
       return { cancel: true }
     },
     { urls: urlsToBlock },
