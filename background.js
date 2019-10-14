@@ -4,13 +4,19 @@ const hostsListUrl =
 fetch(hostsListUrl)
   .then(response => response.text())
   .then(responseText => {
-    let hostsToBlock = responseText.split("\n").filter(line => !line.startsWith("#"))
-    console.log(`${hostsToBlock.length} hosts will be blocked`)
-  })
+    let urlsToBlock = responseText
+      .split("\n")
+      .filter(line => !line.startsWith("#"))
+      .map(host => `*://${host}/*`)
 
-chrome.webRequest.onBeforeRequest.addListener(
-  requestDetails => {
-    console.log(requestDetails.url)
-  },
-  { urls: ["<all_urls>"] },
-)
+    console.log(`${urlsToBlock.length} hosts will be blocked`)
+
+    chrome.webRequest.onBeforeRequest.addListener(
+      requestDetails => {
+        console.log(requestDetails.url)
+        return { cancel: true }
+      },
+      { urls: urlsToBlock },
+      ["blocking"],
+    )
+  })
